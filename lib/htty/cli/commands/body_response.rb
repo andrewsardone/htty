@@ -54,7 +54,7 @@ class HTTY::CLI::Commands::BodyResponse < HTTY::CLI::Command
       if arguments.include?('open')
         open(body)
       elsif arguments.include?('pretty')
-        pretty(body)
+        pretty(body, response.headers_hash['Content-Type'])
       else
         puts body
       end
@@ -79,12 +79,16 @@ class HTTY::CLI::Commands::BodyResponse < HTTY::CLI::Command
     end
   end
 
-  def pretty(body)
-    require 'json'
-    body = JSON.pretty_generate(JSON.parse(body))
-    puts body
-  rescue LoadError
-    warn 'Sorry, you need to install JSON to pretty format JSON responses: `gem install json`'
+  def pretty(body, content_type)
+    if content_type == 'application/json'
+      begin
+        require 'json'
+        body = JSON.pretty_generate(JSON.parse(body))
+        puts body
+      rescue LoadError => e
+        warn 'Sorry, you need to install JSON to pretty format JSON responses: `gem install json`'
+      end
+    end
   end
 
 end
