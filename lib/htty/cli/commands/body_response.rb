@@ -53,6 +53,8 @@ class HTTY::CLI::Commands::BodyResponse < HTTY::CLI::Command
     unless (body = response.body).strip.empty?
       if arguments.include?('open')
         open(body)
+      elsif arguments.include?('pretty')
+        pretty(body)
       else
         puts body
       end
@@ -75,6 +77,14 @@ class HTTY::CLI::Commands::BodyResponse < HTTY::CLI::Command
     TempHTML.new("htty-#{Time.new.strftime("%Y%m%d%H%M%S")}.html").tap do |file|
       file.write(body) and file.rewind
     end
+  end
+
+  def pretty(body)
+    require 'json'
+    body = JSON.pretty_generate(JSON.parse(body))
+    puts body
+  rescue LoadError
+    warn 'Sorry, you need to install JSON to open pages: `gem install json`'
   end
 
 end
