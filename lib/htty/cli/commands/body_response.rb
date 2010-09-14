@@ -84,7 +84,7 @@ class HTTY::CLI::Commands::BodyResponse < HTTY::CLI::Command
     body = JSON.pretty_generate(JSON.parse(body))
     puts body
   rescue LoadError
-    warn 'Sorry, you need to install JSON to open pages: `gem install json`'
+    warn 'Sorry, you need to install JSON to pretty format JSON responses: `gem install json`'
   end
 
 end
