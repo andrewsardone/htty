@@ -22,6 +22,12 @@ class HTTY::Payload
     @headers.to_a
   end
 
+  # Returns an HTTY::OrderedHash of the headers belonging to the payload
+  # Handy for checking the existence/value of HTTP header fields
+  def headers_hash
+    @headers
+  end
+
 protected
 
   # Initializes a new HTTY::Payload with attribute values specified in the
